@@ -16,7 +16,7 @@ func Init(opts *InitOptions) {
 		panic(err)
 	}
 
-	// initialize the .ggit directory with objects/, refs/heads, refs/tags, and HEAD
+	// initialize the .ggit directory with objects/, refs/heads, refs/tags, index and HEAD
 	ggitDir := filepath.Join(wd, ".ggit")
 	objectsDir := filepath.Join(ggitDir, "objects")
 	refsHeadsDir := filepath.Join(ggitDir, "refs/heads")
@@ -25,6 +25,10 @@ func Init(opts *InitOptions) {
 	panicOnErr(os.MkdirAll(objectsDir, 0755))
 	panicOnErr(os.MkdirAll(refsHeadsDir, 0755))
 	panicOnErr(os.MkdirAll(refsTagsDir, 0755))
+
+	// write index file
+	indexFile := filepath.Join(ggitDir, "index")
+	panicOnErr(os.WriteFile(indexFile, []byte{}, 0644))
 
 	// write ref: refs/heads/main to HEAD
 	headFile := filepath.Join(ggitDir, "HEAD")
